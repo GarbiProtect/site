@@ -1,0 +1,139 @@
+// =============================================================================
+// Design tokens — Garbi-Protect
+// Palette disciplinee : une seule teinte de marque (teal #009498) declinee,
+// des neutres legerement chauds pour les fonds, un presque-noir pour le texte.
+// Aucune couleur hors de ces trois familles. Pas de bleu/violet, pas de gris froid.
+// =============================================================================
+
+:root {
+  // ---------------------------------------------------------------------------
+  // Marque — teal. #009498 = couleur de marque (boutons, liens, accents, icones).
+  // Les tints clairs (50-200) servent aux fonds doux et aux accents sur foncE.
+  // Les tons foncEs (700-950) donnent la profondeur (hero, footer).
+  // ---------------------------------------------------------------------------
+  --color-brand-50: #ecf6f7;
+  --color-brand-100: #d6edee;
+  --color-brand-200: #aadcde;
+  --color-brand-300: #74c4c6;
+  --color-brand-400: #34a9ac;
+  --color-brand-500: #009498; // couleur de marque
+  --color-brand-600: #007e81;
+  --color-brand-700: #00686b; // fond hero
+  --color-brand-800: #005457;
+  --color-brand-900: #023133; // fond footer
+  --color-brand-950: #011f20; // profondeur maximale (barre footer)
+
+  // ---------------------------------------------------------------------------
+  // Neutres — gris legerement chauds (jamais froids). Fonds, bordures, textes.
+  // Le rouge domine tres legerement le bleu pour garder une chaleur discrete.
+  // ---------------------------------------------------------------------------
+  --color-ink-50: #f8f7f5;
+  --color-ink-100: #f1efeb;
+  --color-ink-200: #e6e2dc;
+  --color-ink-300: #d3cdc4;
+  --color-ink-400: #a8a299;
+  --color-ink-500: #7b756b;
+  --color-ink-600: #595349;
+  --color-ink-700: #403b33;
+  --color-ink-800: #2a2620;
+  --color-ink-900: #1b1714; // presque-noir chaud (texte)
+
+  // ---------------------------------------------------------------------------
+  // Tokens semantiques — on reference ceux-ci dans les composants, pas les bruts.
+  // ---------------------------------------------------------------------------
+  --color-surface: #ffffff;
+  --color-surface-muted: var(--color-ink-50); // fond de section doux, chaud
+  --color-text: var(--color-ink-900); // presque noir
+  --color-text-muted: var(--color-ink-600);
+  --color-border: var(--color-ink-200);
+
+  --color-link: var(--color-brand-700);
+  --color-link-hover: var(--color-brand-600);
+
+  --color-footer-bg: var(--color-brand-900);
+  --color-footer-bar: var(--color-brand-950);
+
+  --color-on-brand: #ffffff; // texte/icones sur fond teal
+
+  // ---------------------------------------------------------------------------
+  // Typographie — une famille, une echelle modulaire fluide (clamp).
+  // ---------------------------------------------------------------------------
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-heading: var(--font-sans);
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-md: 1.125rem;
+  --fs-lg: 1.375rem;
+  --fs-xl: 1.75rem;
+  --fs-2xl: clamp(1.85rem, 1.35rem + 2.1vw, 2.6rem);
+  --fs-3xl: clamp(2.3rem, 1.55rem + 3vw, 3.25rem);
+  --fs-display: clamp(2.6rem, 1.5rem + 4.6vw, 4.1rem);
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  --lh-tight: 1.12;
+  --lh-snug: 1.32;
+  --lh-base: 1.65;
+
+  --tracking-tight: -0.015em;
+  --tracking-wide: 0.08em;
+
+  // ---------------------------------------------------------------------------
+  // Espacements — echelle 4px. On vise de la respiration : sections genereuses.
+  // ---------------------------------------------------------------------------
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+  --space-11: 10rem;
+
+  // ---------------------------------------------------------------------------
+  // Rayons.
+  // ---------------------------------------------------------------------------
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.75rem;
+  --radius-pill: 999px;
+
+  // ---------------------------------------------------------------------------
+  // Ombres — teintees du presque-noir chaud, jamais de glow.
+  // Empilees sur deux couches (contact rapprochee + diffusion basse) pour une
+  // elevation douce et credible plutot qu'une ombre dure unique.
+  // ---------------------------------------------------------------------------
+  --shadow-xs: 0 1px 2px rgba(27, 23, 20, 0.05);
+  --shadow-sm: 0 1px 2px rgba(27, 23, 20, 0.05), 0 2px 6px rgba(27, 23, 20, 0.04);
+  --shadow-md: 0 2px 4px rgba(27, 23, 20, 0.04), 0 10px 24px rgba(27, 23, 20, 0.07);
+  --shadow-lg: 0 6px 12px rgba(27, 23, 20, 0.05),
+    0 24px 48px rgba(27, 23, 20, 0.1);
+
+  // ---------------------------------------------------------------------------
+  // Mise en page.
+  // ---------------------------------------------------------------------------
+  --container-max: 75rem;
+  --container-narrow: 46rem;
+  --header-height: 4.75rem;
+  --header-height-condensed: 3.75rem;
+
+  // ---------------------------------------------------------------------------
+  // Mouvement — une seule courbe de sortie franche pour tout le site. Discret.
+  // ---------------------------------------------------------------------------
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --transition-fast: 150ms var(--ease-out);
+  --transition-base: 280ms var(--ease-out);
+  --transition-reveal: 700ms var(--ease-out);
+}

@@ -1,17 +1,622 @@
 ---
+import Layout from "../layouts/Layout.astro";
+import Phone from "../components/icons/Phone.astro";
+import PestIcon from "../components/icons/PestIcon.astro";
+import { site } from "../data/site";
+import { nuisibles } from "../data/nuisibles";
 
+const etapes = [
+  {
+    titre: "Vous appelez",
+    texte:
+      "On cerne le problème au téléphone et on fixe un créneau, souvent le jour même.",
+  },
+  {
+    titre: "On intervient",
+    texte:
+      "Un technicien certifié traite les zones touchées et sécurise les points d'entrée.",
+  },
+  {
+    titre: "On suit",
+    texte:
+      "Conseils de prévention et passage de contrôle quand l'infestation le demande.",
+  },
+];
+
+const engagements = [
+  {
+    titre: "Techniciens Certibiocide",
+    texte: "Produits homologués, appliqués dans les règles.",
+    icon: `<path d="M12 3 5 6v5c0 4 3 7 7 9 4-2 7-5 7-9V6l-7-3Z"/><path d="m9 11.5 2 2 4-4"/>`,
+  },
+  {
+    titre: "Intervention sous 2h",
+    texte: "En urgence, partout en Île-de-France.",
+    icon: `<path d="m13 3-7 9h5l-1 7 7-9h-5l1-7Z"/>`,
+  },
+  {
+    titre: "Devis clair",
+    texte: "Un prix annoncé avant, sans surprise après.",
+    icon: `<rect x="5" y="3" width="14" height="18" rx="2"/><line x1="8.5" y1="8" x2="15.5" y2="8"/><line x1="8.5" y1="12" x2="15.5" y2="12"/><line x1="8.5" y1="16" x2="13" y2="16"/>`,
+  },
+  {
+    titre: "Suivi inclus",
+    texte: "On reste joignables après le passage.",
+    icon: `<path d="M20 11a8 8 0 1 0-2.3 5.6"/><path d="M20 5v5h-5"/>`,
+  },
+];
+
+const departements = [
+  { code: "75", nom: "Paris" },
+  { code: "77", nom: "Seine-et-Marne" },
+  { code: "78", nom: "Yvelines" },
+  { code: "91", nom: "Essonne" },
+  { code: "92", nom: "Hauts-de-Seine" },
+  { code: "93", nom: "Seine-Saint-Denis" },
+  { code: "94", nom: "Val-de-Marne" },
+  { code: "95", nom: "Val-d'Oise" },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout
+  title="Garbi-Protect, dératisation et désinsectisation en Île-de-France"
+  description="Garbi-Protect intervient contre rats, souris, punaises de lit, cafards et guêpes en Île-de-France. Techniciens Certibiocide, intervention en urgence sous 2h."
+>
+  <section class="hero">
+    <div class="container hero__grid">
+      <div class="hero__content">
+        <p class="eyebrow hero__eyebrow">
+          Dératisation · Désinsectisation · Île-de-France
+        </p>
+        <h1 class="hero__title">
+          Un nuisible chez vous ? On intervient vite et bien.
+        </h1>
+        <p class="hero__lead">
+          Rats, souris, punaises de lit, cafards, guêpes. Techniciens certifiés,
+          intervention en urgence sous 2h, partout en Île-de-France.
+        </p>
+
+        <div class="hero__actions">
+          <a class="btn btn--on-dark" href={site.phoneHref}>
+            <Phone size={18} />
+            <span>Appeler le {site.phone}</span>
+          </a>
+          <a class="btn hero__quote" href="#devis">Demander un devis</a>
+        </div>
+
+        <ul role="list" class="hero__points">
+          <li>Intervention sous 2h en urgence</li>
+          <li>Techniciens Certibiocide</li>
+          <li>Devis clair, sans surprise</li>
+        </ul>
+      </div>
+
+      <div class="hero__media" aria-hidden="true">
+        <div class="hero__placeholder">
+          <svg
+            width="40"
+            height="40"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"
+            ></path>
+          </svg>
+          <span>Photo à venir</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--muted" aria-labelledby="nuisibles-titre">
+    <div class="container">
+      <div class="section-head section-head--center reveal">
+        <p class="eyebrow">Nos interventions</p>
+        <h2 id="nuisibles-titre">Quel nuisible vous gêne ?</h2>
+        <p class="section-head__lead">
+          On traite les nuisibles les plus courants des logements et des locaux
+          en Île-de-France. Choisissez le vôtre.
+        </p>
+      </div>
+
+      <ul role="list" class="nuisibles">
+        {
+          nuisibles.map((n, i) => (
+            <li class="reveal" style={`--reveal-delay:${i * 60}ms`}>
+              <a class="card nuisible" href={`/nuisibles/${n.slug}`}>
+                <span class="nuisible__disc" aria-hidden="true">
+                  <PestIcon name={n.slug} />
+                </span>
+                <span class="nuisible__name">{n.name}</span>
+                <span class="nuisible__tagline">{n.tagline}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="etapes-titre">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Comment ça se passe</p>
+        <h2 id="etapes-titre">Trois étapes, aucune mauvaise surprise</h2>
+        <p class="section-head__lead">
+          De votre appel au contrôle final, on garde les choses simples et
+          lisibles.
+        </p>
+      </div>
+
+      <ol role="list" class="etapes">
+        {
+          etapes.map((e, i) => (
+            <li class="card etape reveal" style={`--reveal-delay:${i * 90}ms`}>
+              <span class="etape__num" aria-hidden="true">
+                {i + 1}
+              </span>
+              <h3 class="etape__titre">{e.titre}</h3>
+              <p class="etape__texte">{e.texte}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--muted" aria-labelledby="engagements-titre">
+    <div class="container engagements">
+      <div class="engagements__intro reveal">
+        <p class="eyebrow">Pourquoi Garbi-Protect</p>
+        <h2 id="engagements-titre">Une entreprise locale, des méthodes sérieuses</h2>
+        <p class="section-head__lead">
+          Basés à Plaisir, dans les Yvelines, on couvre toute l'Île-de-France.
+          Le travail est fait dans les règles, et on l'assume après le passage.
+        </p>
+        <a class="btn btn--primary engagements__cta" href={site.phoneHref}>
+          <Phone size={18} />
+          <span>{site.phone}</span>
+        </a>
+      </div>
+
+      <ul role="list" class="engagements__grid">
+        {
+          engagements.map((eng, i) => (
+            <li class="card engagement reveal" style={`--reveal-delay:${i * 70}ms`}>
+              <span class="engagement__icon" aria-hidden="true">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  set:html={eng.icon}
+                />
+              </span>
+              <h3 class="engagement__titre">{eng.titre}</h3>
+              <p class="engagement__texte">{eng.texte}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="zones-titre">
+    <div class="container">
+      <div class="section-head section-head--center reveal">
+        <p class="eyebrow">Zones d'intervention</p>
+        <h2 id="zones-titre">On se déplace dans toute l'Île-de-France</h2>
+      </div>
+
+      <ul role="list" class="zones reveal">
+        {
+          departements.map((d) => (
+            <li>
+              <a class="zone" href={`/secteurs/${d.code}`}>
+                <span class="zone__code">{d.code}</span>
+                <span class="zone__nom">{d.nom}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="cta" id="devis">
+    <div class="container cta__inner reveal">
+      <div class="cta__text">
+        <h2 class="cta__titre">Un nuisible à traiter ? On s'en occupe.</h2>
+        <p class="cta__lead">
+          Appelez maintenant pour une intervention rapide, ou demandez un devis
+          gratuit en quelques minutes.
+        </p>
+      </div>
+      <div class="cta__actions">
+        <a class="btn btn--on-dark" href={site.phoneHref}>
+          <Phone size={18} />
+          <span>Appeler le {site.phone}</span>
+        </a>
+        <a class="btn cta__ghost" href="#">Demander un devis</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style lang="scss">
+  @use "../styles/mixins" as *;
+
+  // ---------------------------------------------------------------------------
+  // Hero — fond teal avec un degrade mono-teinte tres discret pour la
+  // profondeur (jamais multi-couleur). Le contenu reste plein et opaque.
+  // ---------------------------------------------------------------------------
+  .hero {
+    color: var(--color-on-brand);
+    background-color: var(--color-brand-700);
+    background-image: linear-gradient(
+      165deg,
+      var(--color-brand-700) 0%,
+      var(--color-brand-800) 100%
+    );
+  }
+
+  .hero__grid {
+    display: grid;
+    gap: var(--space-8);
+    padding-block: var(--space-9);
+
+    @include bp("lg") {
+      grid-template-columns: 1.05fr 0.95fr;
+      align-items: center;
+      gap: var(--space-9);
+      padding-block: var(--space-11);
+    }
+  }
+
+  .hero__eyebrow {
+    color: var(--color-brand-200);
+    margin-bottom: var(--space-5);
+  }
+
+  .hero__title {
+    color: var(--color-on-brand);
+    font-size: var(--fs-display);
+    max-width: 16ch;
+  }
+
+  .hero__lead {
+    margin-top: var(--space-6);
+    max-width: 50ch;
+    font-size: var(--fs-md);
+    color: var(--color-brand-100);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+  }
+
+  .hero__quote {
+    color: var(--color-on-brand);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+
+  .hero__quote:hover {
+    border-color: var(--color-on-brand);
+    background-color: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .hero__points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-6);
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    font-weight: var(--fw-medium);
+    color: var(--color-brand-100);
+  }
+
+  .hero__points li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .hero__points li::before {
+    content: "✓";
+    display: inline-grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    flex-shrink: 0;
+    color: var(--color-brand-800);
+    background-color: var(--color-brand-300);
+    border-radius: var(--radius-pill);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-bold);
+  }
+
+  .hero__media {
+    display: flex;
+  }
+
+  .hero__placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    width: 100%;
+    min-height: 18rem;
+    aspect-ratio: 16 / 11;
+    color: rgba(255, 255, 255, 0.55);
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: var(--radius-2xl);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+
+    @include bp("lg") {
+      aspect-ratio: 4 / 5;
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Nuisibles en "ronds" — cartes nettes, disque teal, icone monoline.
+  // ---------------------------------------------------------------------------
+  .nuisibles {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+
+    @include bp("sm") {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-5);
+    }
+
+    @include bp("md") {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .nuisible {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-2);
+    height: 100%;
+    padding: var(--space-6) var(--space-4);
+    color: var(--color-text);
+  }
+
+  .nuisible__disc {
+    display: grid;
+    place-items: center;
+    width: 4.5rem;
+    height: 4.5rem;
+    margin-bottom: var(--space-3);
+    color: var(--color-brand-600);
+    background-color: var(--color-brand-50);
+    border-radius: var(--radius-pill);
+    transition: background-color var(--transition-base),
+      color var(--transition-base), transform var(--transition-base);
+  }
+
+  .nuisible__name {
+    font-size: var(--fs-md);
+    font-weight: var(--fw-semibold);
+    color: var(--color-ink-900);
+  }
+
+  .nuisible__tagline {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    line-height: var(--lh-snug);
+    text-wrap: balance;
+  }
+
+  .nuisible:hover .nuisible__disc {
+    color: #ffffff;
+    background-color: var(--color-brand-500);
+    transform: scale(1.06);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Etapes — cartes numerotees.
+  // ---------------------------------------------------------------------------
+  .etapes {
+    display: grid;
+    gap: var(--space-5);
+    counter-reset: etape;
+
+    @include bp("md") {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .etape {
+    padding: var(--space-7) var(--space-6);
+  }
+
+  .etape__num {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-bottom: var(--space-5);
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-bold);
+    color: var(--color-brand-700);
+    background-color: var(--color-brand-50);
+    border: 1px solid var(--color-brand-100);
+    border-radius: var(--radius-pill);
+  }
+
+  .etape__titre {
+    margin-bottom: var(--space-3);
+  }
+
+  .etape__texte {
+    color: var(--color-text-muted);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Engagements — intro a gauche, grille de cartes a droite.
+  // ---------------------------------------------------------------------------
+  .engagements {
+    display: grid;
+    gap: var(--space-8);
+
+    @include bp("lg") {
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: var(--space-9);
+      align-items: start;
+    }
+  }
+
+  .engagements__cta {
+    margin-top: var(--space-6);
+  }
+
+  .engagements__grid {
+    display: grid;
+    gap: var(--space-4);
+
+    @include bp("sm") {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-5);
+    }
+  }
+
+  .engagement {
+    padding: var(--space-6);
+  }
+
+  .engagement__icon {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: var(--space-4);
+    color: var(--color-brand-600);
+    background-color: var(--color-brand-50);
+    border-radius: var(--radius-md);
+  }
+
+  .engagement__titre {
+    font-size: var(--fs-md);
+    margin-bottom: var(--space-2);
+  }
+
+  .engagement__texte {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Zones — pastilles departementales.
+  // ---------------------------------------------------------------------------
+  .zones {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+  }
+
+  .zone {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-5);
+    color: var(--color-ink-700);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-xs);
+    transition: color var(--transition-fast),
+      border-color var(--transition-fast),
+      box-shadow var(--transition-base), transform var(--transition-base);
+  }
+
+  .zone:hover {
+    color: var(--color-brand-700);
+    border-color: var(--color-brand-300);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .zone__code {
+    font-weight: var(--fw-bold);
+    color: var(--color-brand-600);
+  }
+
+  .zone__nom {
+    font-size: var(--fs-sm);
+  }
+
+  // ---------------------------------------------------------------------------
+  // CTA — bandeau teal, profondeur par degrade mono-teinte + ombre interne.
+  // ---------------------------------------------------------------------------
+  .cta {
+    color: var(--color-on-brand);
+    background-color: var(--color-brand-700);
+    background-image: linear-gradient(
+      160deg,
+      var(--color-brand-600) 0%,
+      var(--color-brand-800) 100%
+    );
+  }
+
+  .cta__inner {
+    display: grid;
+    gap: var(--space-6);
+    padding-block: var(--space-9);
+
+    @include bp("md") {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: var(--space-8);
+    }
+  }
+
+  .cta__titre {
+    color: var(--color-on-brand);
+    max-width: 18ch;
+  }
+
+  .cta__lead {
+    margin-top: var(--space-4);
+    max-width: 48ch;
+    color: var(--color-brand-100);
+  }
+
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+
+  .cta__ghost {
+    color: var(--color-on-brand);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+
+  .cta__ghost:hover {
+    border-color: var(--color-on-brand);
+    background-color: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+  }
+</style>

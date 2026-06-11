@@ -1,0 +1,128 @@
+---
+import { site } from "../data/site";
+import Phone from "./icons/Phone.astro";
+---
+
+<header class="site-header" data-header>
+  <div class="container site-header__inner">
+    <a class="brand" href="/" aria-label={`${site.name}, accueil`}>
+      <span class="brand__mark" aria-hidden="true">G</span>
+      <span class="brand__name">{site.name}</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Navigation principale">
+      <ul role="list" class="site-nav__list">
+        <li><a href="#">Nuisibles</a></li>
+        <li><a href="#">Secteurs</a></li>
+        <li><a href="#">Tarifs</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <a class="btn btn--primary site-header__cta" href={site.phoneHref}>
+      <Phone size={18} />
+      <span>{site.phone}</span>
+    </a>
+  </div>
+</header>
+
+<style lang="scss">
+  @use "../styles/mixins" as *;
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    transition: background-color var(--transition-base),
+      box-shadow var(--transition-base), border-color var(--transition-base);
+  }
+
+  // Condensation au scroll : la barre se resserre, perd sa bordure dure et
+  // gagne une ombre douce. C'est le seul endroit du site ou une legere
+  // translucidite frostee est autorisee — le fond reste tres opaque pour que
+  // le contenu derriere ne brouille jamais la lecture du header.
+  .site-header.is-scrolled {
+    background-color: rgba(255, 255, 255, 0.82);
+    backdrop-filter: saturate(160%) blur(12px);
+    -webkit-backdrop-filter: saturate(160%) blur(12px);
+    border-bottom-color: transparent;
+    box-shadow: var(--shadow-md);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+    min-height: var(--header-height);
+    transition: min-height var(--transition-base);
+  }
+
+  .site-header.is-scrolled .site-header__inner {
+    min-height: var(--header-height-condensed);
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--color-ink-900);
+    font-weight: var(--fw-bold);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .brand__mark {
+    display: inline-grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    background-color: var(--color-brand-500);
+    color: #ffffff;
+    border-radius: var(--radius-md);
+    font-size: var(--fs-md);
+    box-shadow: var(--shadow-sm);
+    transition: width var(--transition-base), height var(--transition-base);
+  }
+
+  .site-header.is-scrolled .brand__mark {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .brand__name {
+    font-size: var(--fs-md);
+  }
+
+  .site-nav {
+    display: none;
+
+    @include bp("lg") {
+      display: block;
+    }
+  }
+
+  .site-nav__list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+  }
+
+  .site-nav__list a {
+    color: var(--color-ink-700);
+    font-weight: var(--fw-medium);
+  }
+
+  .site-nav__list a:hover {
+    color: var(--color-brand-600);
+  }
+
+  .site-header__cta {
+    display: none;
+
+    @include bp("sm") {
+      display: inline-flex;
+    }
+  }
+</style>

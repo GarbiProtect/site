@@ -1,0 +1,133 @@
+---
+import { site } from "../data/site";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__grid">
+    <div class="site-footer__brand">
+      <span class="site-footer__name">{site.name}</span>
+      <p class="site-footer__pitch">
+        Dératisation et désinsectisation en Île-de-France. Intervention rapide,
+        techniciens certifiés.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="site-footer__title">Coordonnées</h2>
+      <address class="site-footer__address">
+        {site.address.street}<br />
+        {site.address.postalCode} {site.address.city}<br />
+        <a href={site.phoneHref}>{site.phone}</a><br />
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+      </address>
+    </div>
+
+    <nav class="site-footer__nav" aria-label="Plan du site">
+      <h2 class="site-footer__title">Plan du site</h2>
+      <ul role="list">
+        <li><a href="#">Nuisibles</a></li>
+        <li><a href="#">Secteurs d'intervention</a></li>
+        <li><a href="#">Tarifs</a></li>
+        <li><a href="#">Demander un devis</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="site-footer__bar">
+    <div class="container site-footer__bar-inner">
+      <p>© {year} {site.name}. Tous droits réservés.</p>
+      <ul role="list" class="site-footer__legal">
+        <li><a href="#">Mentions légales</a></li>
+        <li><a href="#">CGV</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style lang="scss">
+  @use "../styles/mixins" as *;
+
+  .site-footer {
+    background-color: var(--color-footer-bg);
+    color: var(--color-ink-200);
+  }
+
+  .site-footer__grid {
+    display: grid;
+    gap: var(--space-8);
+    padding-block: var(--space-9);
+
+    @include bp("md") {
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: var(--space-7);
+    }
+  }
+
+  .site-footer__name {
+    display: block;
+    font-size: var(--fs-md);
+    font-weight: var(--fw-bold);
+    color: var(--color-on-brand);
+    margin-bottom: var(--space-4);
+  }
+
+  .site-footer__pitch {
+    max-width: 34ch;
+    color: var(--color-ink-300);
+  }
+
+  .site-footer__title {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-brand-200);
+    margin-bottom: var(--space-5);
+  }
+
+  .site-footer__address {
+    font-style: normal;
+    line-height: 2;
+  }
+
+  .site-footer__nav ul {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .site-footer a {
+    color: var(--color-ink-200);
+  }
+
+  .site-footer a:hover {
+    color: var(--color-brand-200);
+  }
+
+  .site-footer__bar {
+    background-color: var(--color-footer-bar);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .site-footer__bar-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding-block: var(--space-6);
+    font-size: var(--fs-sm);
+    color: var(--color-ink-300);
+
+    @include bp("sm") {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .site-footer__legal {
+    display: flex;
+    gap: var(--space-5);
+  }
+</style>
