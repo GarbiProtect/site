@@ -1,0 +1,201 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { nuisibles } from "../data/nuisibles";
+---
+
+<Layout
+  title="Demande de devis gratuit, Garbi-Protect"
+  description="Demandez un devis gratuit à Garbi-Protect pour un problème de nuisibles en Île-de-France. Prix clair, annoncé avant l'intervention."
+>
+  <section class="section devis-page">
+    <div class="container devis-page__inner">
+      <div class="devis-page__head">
+        <h1>Demande de devis gratuit</h1>
+        <p class="devis-page__intro">
+          Décrivez votre problème, on vous répond avec un prix clair, annoncé
+          avant l'intervention.
+        </p>
+      </div>
+
+      <form
+        class="card devis-form"
+        name="devis"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        action="/merci"
+      >
+        <input type="hidden" name="form-name" value="devis" />
+        <p class="devis-form__hp" hidden>
+          <label>Ne pas remplir : <input name="bot-field" /></label>
+        </p>
+
+        <div class="devis-form__grid">
+          <div class="field">
+            <label class="field__label" for="nom">Nom <span aria-hidden="true">*</span></label>
+            <input class="field__input" id="nom" name="nom" type="text" autocomplete="name" required />
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="telephone">Téléphone <span aria-hidden="true">*</span></label>
+            <input class="field__input" id="telephone" name="telephone" type="tel" autocomplete="tel" required />
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="email">Email</label>
+            <input class="field__input" id="email" name="email" type="email" autocomplete="email" />
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="code-postal">Code postal <span aria-hidden="true">*</span></label>
+            <input
+              class="field__input"
+              id="code-postal"
+              name="code-postal"
+              type="text"
+              inputmode="numeric"
+              autocomplete="postal-code"
+              pattern="[0-9]{5}"
+              maxlength="5"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="nuisible">Type de nuisible <span aria-hidden="true">*</span></label>
+            <select class="field__input" id="nuisible" name="nuisible" required>
+              <option value="">Choisir…</option>
+              {nuisibles.map((n) => <option value={n.slug}>{n.name}</option>)}
+              <option value="autre">Autre</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="infestation">Niveau d'infestation</label>
+            <select class="field__input" id="infestation" name="infestation">
+              <option value="">Choisir…</option>
+              <option value="leger">Léger</option>
+              <option value="modere">Modéré</option>
+              <option value="important">Important</option>
+              <option value="inconnu">Je ne sais pas</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="surface">Surface approximative</label>
+            <input class="field__input" id="surface" name="surface" type="text" placeholder="ex. 45 m²" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="message">Message</label>
+          <textarea class="field__input" id="message" name="message" rows="4" placeholder="Décrivez la situation, depuis quand, où, etc."></textarea>
+        </div>
+
+        <button class="btn btn--primary devis-form__submit" type="submit">
+          Demander mon devis gratuit
+        </button>
+
+        <p class="devis-form__note">
+          Les champs marqués d'un astérisque sont obligatoires.
+        </p>
+      </form>
+    </div>
+  </section>
+</Layout>
+
+<style lang="scss">
+  @use "../styles/mixins" as *;
+
+  .devis-page__inner {
+    max-width: var(--container-narrow);
+  }
+
+  .devis-page__head {
+    margin-bottom: var(--space-7);
+  }
+
+  .devis-page__intro {
+    margin-top: var(--space-4);
+    max-width: 48ch;
+    font-size: var(--fs-md);
+    color: var(--color-text-muted);
+  }
+
+  .devis-form {
+    padding: var(--space-6);
+
+    @include bp("sm") {
+      padding: var(--space-7);
+    }
+  }
+
+  .devis-form__grid {
+    display: grid;
+    gap: var(--space-4);
+
+    @include bp("sm") {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-4) var(--space-5);
+    }
+  }
+
+  .field {
+    margin-bottom: var(--space-4);
+  }
+
+  .devis-form__grid .field {
+    margin-bottom: 0;
+  }
+
+  .field__label {
+    display: block;
+    margin-bottom: var(--space-2);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--color-ink-700);
+  }
+
+  .field__label span {
+    color: var(--color-brand-600);
+  }
+
+  .field__input {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    font-family: inherit;
+    font-size: var(--fs-base);
+    color: var(--color-ink-900);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    transition: border-color var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+
+  textarea.field__input {
+    resize: vertical;
+    min-height: 6rem;
+  }
+
+  .field__input:focus {
+    outline: none;
+    border-color: var(--color-brand-400);
+    box-shadow: 0 0 0 3px var(--color-brand-100);
+  }
+
+  .devis-form__grid + .field {
+    margin-top: var(--space-4);
+  }
+
+  .devis-form__submit {
+    width: 100%;
+    margin-top: var(--space-5);
+  }
+
+  .devis-form__note {
+    margin-top: var(--space-4);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+</style>

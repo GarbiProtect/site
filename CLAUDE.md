@@ -27,9 +27,9 @@ Propre, lisible, pas de commentaires sauf si explicitement demandé.
 Composants réutilisables, zéro duplication.
 HTML sémantique correct (un seul <h1> par page, hiérarchie logique des titres).
 Design
-Identité teal #009498 partout. Design intentionnel, qualité agence.
-INTERDIT : le bleu/indigo/violet par défaut de Tailwind. Aucun dégradé bleu/violet/aurora/magenta. Pas de glassmorphism, pas de glow générique, pas d'aspect "template généré par IA".
-Repère de ce qu'on ne veut PAS : l'ancien site avait une couleur principale bleue et des dégradés bleu vers violet vers vert. On repart du teal, proprement.
+Identité bleu du logo officiel partout : principale #003C95, accent cyan #14D0F8, et un bleu foncé #002A66 pour la profondeur (footer, survol). Neutres chauds et texte presque noir conservés. Design intentionnel, qualité agence.
+INTERDIT : le bleu/indigo/violet par défaut de Tailwind. Aucun dégradé violet/aurora/magenta, aucun dégradé multicolore en fond de section. Le dégradé cyan vers bleu est réservé au logo et à de rares micro-accents. Pas de glassmorphism, pas de glow générique, pas d'aspect "template généré par IA".
+Repère de ce qu'on ne veut PAS : l'ancien site avait des dégradés bleu vers violet vers vert. On part du bleu du logo (#003C95), proprement, pas du bleu générique Tailwind.
 Textes du site (anti-IA, strict)
 Français naturel, direct, concret, comme un vrai pro l'écrirait. Jamais de marketing creux.
 Tournures bannies : "passionné par", "plongez dans", "n'hésitez pas à", "dans le monde de", "que vous soyez particulier ou professionnel" (et toutes ses variantes), "solutions sur-mesure" employé dans le vide, "votre allié", "tranquillité d'esprit", etc.
@@ -59,7 +59,7 @@ On ne duplique jamais le contenu commun. Le texte partagé vit dans reglages (ou
 
 
 Pages à construire
-Accueil : hero teal, sélection des nuisibles en "ronds" (façon Oxipest mais en mieux et en teal), bloc confiance, "comment ça se passe", tarifs, à propos, appel à l'action contact.
+Accueil : hero bleu, sélection des nuisibles en "ronds" (façon Oxipest mais en mieux et en bleu), bloc confiance, "comment ça se passe", tarifs, à propos, appel à l'action contact.
 Nuisibles : punaises de lit, dératisation/rats, souris, désinsectisation/cafards, fourmis, frelons/guêpes, dépigeonnage (nouveau), anthrènes.
 Départements : 75, 77, 78, 91, 92, 93, 94, 95.
 Villes/arrondissements : système géo, démarré sur les punaises de lit, structuré pour pouvoir étendre aux autres nuisibles plus tard sans tout casser.

@@ -1,25 +1,45 @@
 ---
+import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
 import Phone from "../components/icons/Phone.astro";
 import PestIcon from "../components/icons/PestIcon.astro";
 import { site } from "../data/site";
 import { nuisibles } from "../data/nuisibles";
 
+import type { ImageMetadata } from "astro";
+
+// Photo du hero. Pour changer l'image, remplace ce seul import (ou remplace le
+// fichier src/assets/hero-intervention.png en gardant le meme nom).
+import heroPhoto from "../assets/hero-intervention.png";
+
+// Photos des nuisibles. Chaque carte pointe vers un fichier de ce dossier via
+// son champ `image` (voir src/data/nuisibles.ts) : pour remplacer une photo,
+// on garde le meme nom de fichier, ou on change le champ `image`. Un seul endroit.
+const nuisibleImages = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/nuisibles/*.{png,jpg,jpeg,webp}",
+  { eager: true },
+);
+const nuisibleImage = (file: string): ImageMetadata =>
+  nuisibleImages[`../assets/nuisibles/${file}`].default;
+
 const etapes = [
   {
-    titre: "Vous appelez",
+    titre: "On diagnostique",
     texte:
-      "On cerne le problème au téléphone et on fixe un créneau, souvent le jour même.",
+      "On cerne le problème au téléphone puis sur place, et on établit un plan d'action. Devis rapide.",
+    icon: `<circle cx="11" cy="11" r="6.5"/><line x1="15.8" y1="15.8" x2="20.5" y2="20.5"/>`,
   },
   {
-    titre: "On intervient",
+    titre: "On traite",
     texte:
-      "Un technicien certifié traite les zones touchées et sécurise les points d'entrée.",
+      "Un technicien certifié applique la bonne méthode selon le nuisible (détection thermique, vapeur sèche, traitements ciblés). Un technicien peut intervenir dans la journée.",
+    icon: `<circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.4"/><line x1="12" y1="1.6" x2="12" y2="4.4"/><line x1="12" y1="19.6" x2="12" y2="22.4"/><line x1="1.6" y1="12" x2="4.4" y2="12"/><line x1="19.6" y1="12" x2="22.4" y2="12"/>`,
   },
   {
     titre: "On suit",
     texte:
-      "Conseils de prévention et passage de contrôle quand l'infestation le demande.",
+      "Passage de contrôle et conseils de prévention pour éviter la récidive. Suivi et garantie.",
+    icon: `<rect x="4" y="5" width="16" height="16" rx="2"/><line x1="4" y1="9.5" x2="20" y2="9.5"/><line x1="8.5" y1="3" x2="8.5" y2="6.5"/><line x1="15.5" y1="3" x2="15.5" y2="6.5"/><path d="m9 14.5 2 2 4-4"/>`,
   },
 ];
 
@@ -56,6 +76,80 @@ const departements = [
   { code: "94", nom: "Val-de-Marne" },
   { code: "95", nom: "Val-d'Oise" },
 ];
+
+const tarifs = [
+  {
+    titre: "Punaises de lit",
+    prix: "199",
+    soustitre: "Traitement complet avec garantie",
+    inclus: [
+      "Main d'œuvre",
+      "Frais de déplacement",
+      "Rapport d'intervention",
+      "Garantie 2 mois",
+    ],
+  },
+  {
+    titre: "Dératisation",
+    prix: "149",
+    soustitre: "Traitement complet avec diagnostic",
+    inclus: [
+      "Diagnostic",
+      "Main d'œuvre",
+      "Frais de déplacement",
+      "Rapport d'intervention",
+    ],
+  },
+  {
+    titre: "Désinsectisation",
+    prix: "149",
+    soustitre: "Traitement complet avec garantie",
+    inclus: [
+      "Main d'œuvre",
+      "Frais de déplacement",
+      "Rapport d'intervention",
+      "Garantie 2 mois",
+    ],
+  },
+];
+
+// Avis Google reels (texte exact fourni par le client), 5 etoiles chacun. Pour
+// ajouter ou retirer un avis, edite ce tableau. Ne jamais inventer d'avis.
+const avis = [
+  { nom: "Lucille de Rochegonde", texte: "Entreprise fiable et réactive ! Merci pour votre intervention ! Je recommande" },
+  { nom: "Basile de Margerie", texte: "Entreprise très réactive et professionnelle, et leur intervention a permis d'éradiquer définitivement les nuisibles. Je recommande !" },
+  { nom: "Rogé Cavailles", texte: "Super expérience avec Garbi Protect. Équipe sérieuse, réactive et hyper sympa. Je recommande sans hésiter !" },
+  { nom: "Baptiste", texte: "Équipe réactive et fiable, intervention rapide. Nous voilà débarrassés de tous nuisibles dans la copropriété. Je recommande !" },
+  { nom: "Eléonore Aubinaud", texte: "Entreprise fiable et d'une réactivité bluffante. Ils sont à l'écoute avec toujours une solution. Je recommande !" },
+  { nom: "Claire", texte: "Très bonne expérience avec Garbi-Protect. Ils ont été super efficaces pour intervenir et gérer mon infestation. Merci encore ! Je les recommande sans hésiter !" },
+  { nom: "Tanguy de Poncins", texte: "Très réactif !" },
+  { nom: "Constance Simon", texte: "Intervention rapide et efficace et à un prix abordable ! Merci l'équipe !" },
+  { nom: "Ombline Daubin", texte: "Réactifs, pro, performants. Je recommande" },
+  { nom: "Godefroy Daubin", texte: "Très réactifs et efficaces, je recommande ! La copropriété se débarrasse enfin des nuisibles dans la cave" },
+  { nom: "Henry Hurlé", texte: "Le technicien est venu le lendemain de mon appel, et m'a débarrassé des souris qui résistaient à mes pièges et mes poisons. Super service" },
+  { nom: "Florian C", texte: "Extrêmement satisfait de Garbi Protect. Intervention rapide, efficace, à des prix très raisonnables. Contact humain remarquable. Je recommande." },
+  { nom: "Constance Parfait", texte: "Société très réactive et professionnelle, solution très efficace contre les rats. Je recommande !" },
+  { nom: "Isaure Savouré", texte: "Très efficace et réactif !" },
+  { nom: "Marie Gastines", texte: "Service efficace et professionnel. Mon problème de souris a été rapidement réglé. Très satisfaite, je recommande" },
+];
+
+const avisInitiales = (nom: string): string => {
+  const mots = nom.split(" ").filter(Boolean);
+  if (mots.length === 1) return mots[0].slice(0, 1).toUpperCase();
+  return (mots[0][0] + mots[mots.length - 1][0]).toUpperCase();
+};
+
+// Nombre total d'avis affiche sous le titre. Lien vers la fiche Google a remplir.
+// Aucune note moyenne n'est affichee tant qu'elle n'est pas fournie (pas d'invention).
+const avisTotal = "44";
+const avisUrl = "LIEN_GOOGLE_A_REMPLIR";
+
+// Repartition en 3 colonnes pour le mur d'avis qui defile doucement.
+const avisColonnes = [avis.slice(0, 5), avis.slice(5, 10), avis.slice(10, 15)];
+
+const etoiles = [0, 1, 2, 3, 4];
+const starPath =
+  "M12 3.6l2.5 5.1 5.6.8-4.1 4 1 5.6L12 16.5 7 19.1l1-5.6-4.1-4 5.6-.8z";
 ---
 
 <Layout
@@ -91,26 +185,22 @@ const departements = [
         </ul>
       </div>
 
-      <div class="hero__media" aria-hidden="true">
-        <div class="hero__placeholder">
-          <svg
-            width="40"
-            height="40"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"
-            ></path>
-          </svg>
-          <span>Photo à venir</span>
-        </div>
+      <div class="hero__media">
+        <Image
+          class="hero__photo"
+          src={heroPhoto}
+          alt="Deux techniciens Garbi-Protect devant leur véhicule d'intervention en Île-de-France."
+          widths={[420, 640, 880]}
+          sizes="(min-width: 64rem) 44vw, 90vw"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
       </div>
     </div>
   </section>
 
-  <section class="section section--muted" aria-labelledby="nuisibles-titre">
+  <section class="section section--muted" id="nuisibles" aria-labelledby="nuisibles-titre">
     <div class="container">
       <div class="section-head section-head--center reveal">
         <p class="eyebrow">Nos interventions</p>
@@ -125,9 +215,27 @@ const departements = [
         {
           nuisibles.map((n, i) => (
             <li class="reveal" style={`--reveal-delay:${i * 60}ms`}>
-              <a class="card nuisible" href={`/nuisibles/${n.slug}`}>
-                <span class="nuisible__disc" aria-hidden="true">
-                  <PestIcon name={n.slug} />
+              <a class="card nuisible" href={`/devis?nuisible=${n.slug}`}>
+                <span
+                  class:list={[
+                    "nuisible__disc",
+                    n.image ? "nuisible__disc--photo" : "nuisible__disc--icon",
+                  ]}
+                  aria-hidden="true"
+                >
+                  {n.image ? (
+                    <Image
+                      class="nuisible__photo"
+                      src={nuisibleImage(n.image)}
+                      alt=""
+                      widths={[88, 132, 176]}
+                      sizes="5.5rem"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <PestIcon name={n.slug} />
+                  )}
                 </span>
                 <span class="nuisible__name">{n.name}</span>
                 <span class="nuisible__tagline">{n.tagline}</span>
@@ -150,15 +258,30 @@ const departements = [
         </p>
       </div>
 
-      <ol role="list" class="etapes">
+      <ol role="list" class="parcours">
         {
           etapes.map((e, i) => (
-            <li class="card etape reveal" style={`--reveal-delay:${i * 90}ms`}>
-              <span class="etape__num" aria-hidden="true">
-                {i + 1}
+            <li class="parcours__etape reveal" style={`--reveal-delay:${i * 120}ms`}>
+              <span class="parcours__badge">
+                <span class="parcours__num" aria-hidden="true">{i + 1}</span>
               </span>
-              <h3 class="etape__titre">{e.titre}</h3>
-              <p class="etape__texte">{e.texte}</p>
+              <div class="parcours__content">
+                <span class="parcours__icon" aria-hidden="true">
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    set:html={e.icon}
+                  />
+                </span>
+                <h3 class="parcours__titre">{e.titre}</h3>
+                <p class="parcours__texte">{e.texte}</p>
+              </div>
             </li>
           ))
         }
@@ -166,7 +289,7 @@ const departements = [
     </div>
   </section>
 
-  <section class="section section--muted" aria-labelledby="engagements-titre">
+  <section class="section section--muted engagements-section" aria-labelledby="engagements-titre">
     <div class="container engagements">
       <div class="engagements__intro reveal">
         <p class="eyebrow">Pourquoi Garbi-Protect</p>
@@ -207,7 +330,133 @@ const departements = [
     </div>
   </section>
 
-  <section class="section" aria-labelledby="zones-titre">
+  <section class="section" id="tarifs" aria-labelledby="prix-titre">
+    <div class="container">
+      <div class="section-head section-head--center reveal">
+        <h2 id="prix-titre">Nos tarifs</h2>
+        <p class="section-head__lead">
+          Un forfait clair selon le type d'intervention.
+        </p>
+        <p class="tarifs__rappel">
+          <svg
+            class="tarifs__check"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              d="m5 12.5 4.2 4.2L19 7"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+          Devis gratuit, prix annoncé avant l'intervention.
+        </p>
+      </div>
+
+      <ul role="list" class="tarifs">
+        {
+          tarifs.map((t, i) => (
+            <li class="card tarif reveal" style={`--reveal-delay:${i * 80}ms`}>
+              <div class="tarif__head">
+                <h3 class="tarif__titre">{t.titre}</h3>
+                <p class="tarif__prix">
+                  <span class="tarif__from">À partir de</span>
+                  <span class="tarif__value">{t.prix} €</span>
+                </p>
+                <p class="tarif__soustitre">{t.soustitre}</p>
+              </div>
+
+              <ul role="list" class="tarif__inclus">
+                {t.inclus.map((item) => (
+                  <li>
+                    <svg
+                      class="tarif__tick"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="m5 12.5 4.2 4.2L19 7"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <a class="btn btn--primary tarif__cta" href="/devis">
+                Obtenir un devis
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--muted avis" id="avis" aria-labelledby="avis-titre">
+    <div class="container">
+      <div class="section-head section-head--center reveal">
+        <p class="eyebrow">Avis Google</p>
+        <h2 id="avis-titre">Ils nous recommandent</h2>
+        <p class="avis__count">{avisTotal} avis sur Google</p>
+        <a class="btn btn--ghost avis__cta" href={avisUrl}>
+          Voir tous les avis sur Google
+        </a>
+      </div>
+
+      <div class="avis-wall" role="region" aria-label="Avis clients publiés sur Google">
+        {
+          avisColonnes.map((colonne, ci) => (
+            <ul
+              role="list"
+              class={`avis-col avis-col--${ci + 1}`}
+              style={`--avis-duration:${30 + ci * 7}s`}
+            >
+              {[0, 1].map((copie) => (
+                <Fragment>
+                  {colonne.map((a) => (
+                    <li class="card avis-card" aria-hidden={copie === 1 ? "true" : "false"}>
+                      <div class="avis-card__stars" aria-label="Noté 5 sur 5">
+                        {etoiles.map(() => (
+                          <svg class="star star--on" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d={starPath} />
+                          </svg>
+                        ))}
+                      </div>
+                      <p class="avis-card__text">{a.texte}</p>
+                      <div class="avis-card__author">
+                        <span class="avis-card__avatar" aria-hidden="true">
+                          {avisInitiales(a.nom)}
+                        </span>
+                        <span class="avis-card__meta">
+                          <span class="avis-card__name">{a.nom}</span>
+                          <span class="avis-card__source">Avis Google</span>
+                        </span>
+                      </div>
+                    </li>
+                  ))}
+                </Fragment>
+              ))}
+            </ul>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="secteurs" aria-labelledby="zones-titre">
     <div class="container">
       <div class="section-head section-head--center reveal">
         <p class="eyebrow">Zones d'intervention</p>
@@ -218,7 +467,7 @@ const departements = [
         {
           departements.map((d) => (
             <li>
-              <a class="zone" href={`/secteurs/${d.code}`}>
+              <a class="zone" href="/devis">
                 <span class="zone__code">{d.code}</span>
                 <span class="zone__nom">{d.nom}</span>
               </a>
@@ -229,22 +478,67 @@ const departements = [
     </div>
   </section>
 
-  <section class="cta" id="devis">
-    <div class="container cta__inner reveal">
-      <div class="cta__text">
-        <h2 class="cta__titre">Un nuisible à traiter ? On s'en occupe.</h2>
-        <p class="cta__lead">
-          Appelez maintenant pour une intervention rapide, ou demandez un devis
-          gratuit en quelques minutes.
+  <section class="devis" id="devis" aria-labelledby="devis-titre">
+    <div class="container devis__inner reveal">
+      <div class="devis__text">
+        <p class="eyebrow devis__eyebrow">Devis gratuit</p>
+        <h2 id="devis-titre" class="devis__titre">Demandez votre devis gratuit</h2>
+        <p class="devis__lead">
+          Décrivez votre problème en deux minutes. On vous répond avec un prix
+          clair, annoncé avant l'intervention.
+        </p>
+        <p class="devis__call">
+          Besoin d'une réponse tout de suite ?
+          <a href={site.phoneHref}>Appelez le {site.phone}</a>.
         </p>
       </div>
-      <div class="cta__actions">
-        <a class="btn btn--on-dark" href={site.phoneHref}>
-          <Phone size={18} />
-          <span>Appeler le {site.phone}</span>
-        </a>
-        <a class="btn cta__ghost" href="#">Demander un devis</a>
-      </div>
+
+      <form
+        class="devis__card card"
+        name="devis-rapide"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        action="/merci"
+      >
+        <input type="hidden" name="form-name" value="devis-rapide" />
+        <p class="devis__hp" hidden>
+          <label>Ne pas remplir : <input name="bot-field" /></label>
+        </p>
+
+        <p class="devis__card-title">Premier aperçu</p>
+
+        <div class="field">
+          <label class="field__label" for="rapide-nom">Nom</label>
+          <input class="field__input" id="rapide-nom" name="nom" type="text" autocomplete="name" required />
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="rapide-tel">Téléphone</label>
+          <input class="field__input" id="rapide-tel" name="telephone" type="tel" autocomplete="tel" required />
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="rapide-type">Type de nuisible</label>
+          <select class="field__input" id="rapide-type" name="nuisible" required>
+            <option value="">Choisir…</option>
+            {
+              nuisibles.map((n) => (
+                <option value={n.slug}>{n.name}</option>
+              ))
+            }
+          </select>
+        </div>
+
+        <button class="btn btn--primary devis__submit" type="submit">
+          Demander un devis gratuit
+        </button>
+
+        <p class="devis__hint">
+          Besoin de tout détailler ?{" "}
+          <a href="/devis">Le formulaire complet est sur la page devis.</a>
+        </p>
+      </form>
     </div>
   </section>
 </Layout>
@@ -253,7 +547,7 @@ const departements = [
   @use "../styles/mixins" as *;
 
   // ---------------------------------------------------------------------------
-  // Hero — fond teal avec un degrade mono-teinte tres discret pour la
+  // Hero — fond bleu avec un degrade mono-teinte tres discret pour la
   // profondeur (jamais multi-couleur). Le contenu reste plein et opaque.
   // ---------------------------------------------------------------------------
   .hero {
@@ -350,31 +644,23 @@ const departements = [
     display: flex;
   }
 
-  .hero__placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-3);
+  .hero__photo {
     width: 100%;
-    min-height: 18rem;
-    aspect-ratio: 16 / 11;
-    color: rgba(255, 255, 255, 0.55);
-    background-color: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: center 25%;
     border-radius: var(--radius-2xl);
-    font-size: var(--fs-sm);
-    font-weight: var(--fw-medium);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
+    box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255, 255, 255, 0.12);
 
     @include bp("lg") {
       aspect-ratio: 4 / 5;
+      object-position: center 20%;
     }
   }
 
   // ---------------------------------------------------------------------------
-  // Nuisibles en "ronds" — cartes nettes, disque teal, icone monoline.
+  // Nuisibles en "ronds" — cartes nettes, disque bleu, icone monoline.
   // ---------------------------------------------------------------------------
   .nuisibles {
     display: grid;
@@ -388,6 +674,10 @@ const departements = [
 
     @include bp("md") {
       grid-template-columns: repeat(4, 1fr);
+    }
+
+    @include bp("lg") {
+      grid-template-columns: repeat(5, 1fr);
     }
   }
 
@@ -405,14 +695,27 @@ const departements = [
   .nuisible__disc {
     display: grid;
     place-items: center;
-    width: 4.5rem;
-    height: 4.5rem;
+    width: 5.5rem;
+    height: 5.5rem;
     margin-bottom: var(--space-3);
+    overflow: hidden;
+    isolation: isolate;
     color: var(--color-brand-600);
     background-color: var(--color-brand-50);
     border-radius: var(--radius-pill);
     transition: background-color var(--transition-base),
       color var(--transition-base), transform var(--transition-base);
+  }
+
+  // Photos de nuisibles : fond blanc neutralise par le multiply pour se fondre
+  // dans le disque bleu clair commun a toutes les cartes. Cadrage identique
+  // (meme disque, meme contain, meme retrait) pour toutes les photos.
+  .nuisible__photo {
+    width: 100%;
+    height: 100%;
+    padding: 0.5rem;
+    object-fit: contain;
+    mix-blend-mode: multiply;
   }
 
   .nuisible__name {
@@ -429,54 +732,177 @@ const departements = [
   }
 
   .nuisible:hover .nuisible__disc {
-    color: #ffffff;
-    background-color: var(--color-brand-500);
     transform: scale(1.06);
   }
 
+  .nuisible:hover .nuisible__disc--icon {
+    color: #ffffff;
+    background-color: var(--color-brand-500);
+  }
+
   // ---------------------------------------------------------------------------
-  // Etapes — cartes numerotees.
+  // Parcours "Comment ca se passe" — etapes reliees par un fil (horizontal en
+  // desktop, vertical en mobile). Badge numerote bleu plein + petite icone, le
+  // contenu en carte se souleve au survol/focus. La cascade vient de .reveal.
   // ---------------------------------------------------------------------------
-  .etapes {
-    display: grid;
-    gap: var(--space-5);
-    counter-reset: etape;
+  .parcours {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-7);
 
     @include bp("md") {
-      grid-template-columns: repeat(3, 1fr);
+      position: relative;
+      flex-direction: row;
+      align-items: stretch;
+      gap: var(--space-6);
     }
   }
 
-  .etape {
-    padding: var(--space-7) var(--space-6);
+  // Fil horizontal derriere les badges (desktop), du premier au dernier badge.
+  @include bp("md") {
+    .parcours::before {
+      content: "";
+      position: absolute;
+      top: 1.7rem;
+      left: 16.6%;
+      right: 16.6%;
+      height: 2px;
+      background-color: var(--color-brand-100);
+      z-index: 0;
+    }
   }
 
-  .etape__num {
+  .parcours__etape {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-4);
+    align-items: start;
+
+    @include bp("md") {
+      flex: 1;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr;
+      justify-items: center;
+      gap: var(--space-5);
+      text-align: center;
+    }
+  }
+
+  // Fil vertical reliant les badges (mobile uniquement).
+  .parcours__etape:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    top: 3.4rem;
+    left: calc(1.7rem - 1px);
+    bottom: calc(-1 * var(--space-7));
+    width: 2px;
+    background-color: var(--color-brand-100);
+
+    @include bp("md") {
+      display: none;
+    }
+  }
+
+  .parcours__badge {
+    position: relative;
+    z-index: 1;
     display: grid;
     place-items: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    margin-bottom: var(--space-5);
+    width: 3.4rem;
+    height: 3.4rem;
+    border-radius: var(--radius-pill);
+    background-color: var(--color-brand-600);
+    box-shadow: 0 0 0 5px var(--color-surface), var(--shadow-sm);
+  }
+
+  .parcours__num {
     font-size: var(--fs-lg);
     font-weight: var(--fw-bold);
-    color: var(--color-brand-700);
-    background-color: var(--color-brand-50);
-    border: 1px solid var(--color-brand-100);
-    border-radius: var(--radius-pill);
+    color: #ffffff;
   }
 
-  .etape__titre {
+  .parcours__content {
+    width: 100%;
+    height: 100%;
+    padding: var(--space-5) var(--space-6);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition-base),
+      box-shadow var(--transition-base), border-color var(--transition-base);
+  }
+
+  .parcours__etape:hover .parcours__content,
+  .parcours__etape:focus-within .parcours__content {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-ink-300);
+  }
+
+  .parcours__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
     margin-bottom: var(--space-3);
+    color: var(--color-brand-600);
+    background-color: var(--color-brand-50);
+    border-radius: var(--radius-md);
+
+    @include bp("md") {
+      margin-inline: auto;
+    }
   }
 
-  .etape__texte {
+  .parcours__titre {
+    font-size: var(--fs-md);
+    margin-bottom: var(--space-2);
+  }
+
+  .parcours__texte {
     color: var(--color-text-muted);
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .parcours__content {
+      transition: none;
+    }
+
+    .parcours__etape:hover .parcours__content,
+    .parcours__etape:focus-within .parcours__content {
+      transform: none;
+    }
+  }
+
   // ---------------------------------------------------------------------------
-  // Engagements — intro a gauche, grille de cartes a droite.
+  // Engagements "Pourquoi Garbi-Protect" — intro a gauche, grille a droite.
+  // Tuiles d'icone bleu plein (icone blanche), survol = lift + liseré cyan.
+  // Profondeur via un grand hexagone de marque tres discret en fond de section.
   // ---------------------------------------------------------------------------
+  .engagements-section {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .engagements-section::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    width: 36rem;
+    height: 40rem;
+    right: -9rem;
+    bottom: -13rem;
+    background-color: var(--color-brand-100);
+    opacity: 0.35;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    pointer-events: none;
+  }
+
   .engagements {
+    position: relative;
+    z-index: 1;
     display: grid;
     gap: var(--space-8);
 
@@ -502,7 +928,31 @@ const departements = [
   }
 
   .engagement {
+    position: relative;
     padding: var(--space-6);
+  }
+
+  .engagement::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background-color: var(--color-accent);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    opacity: 0;
+    transition: opacity var(--transition-base);
+  }
+
+  .engagement:hover,
+  .engagement:focus-within {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-ink-300);
+  }
+
+  .engagement:hover::before,
+  .engagement:focus-within::before {
+    opacity: 1;
   }
 
   .engagement__icon {
@@ -511,8 +961,8 @@ const departements = [
     width: 3rem;
     height: 3rem;
     margin-bottom: var(--space-4);
-    color: var(--color-brand-600);
-    background-color: var(--color-brand-50);
+    color: #ffffff;
+    background-color: var(--color-brand-600);
     border-radius: var(--radius-md);
   }
 
@@ -524,6 +974,18 @@ const departements = [
   .engagement__texte {
     font-size: var(--fs-sm);
     color: var(--color-text-muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .engagement,
+    .engagement::before {
+      transition: none;
+    }
+
+    .engagement:hover,
+    .engagement:focus-within {
+      transform: none;
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -568,9 +1030,320 @@ const departements = [
   }
 
   // ---------------------------------------------------------------------------
-  // CTA — bandeau teal, profondeur par degrade mono-teinte + ombre interne.
+  // Tarifs — trois cartes de forfaits, prix "a partir de", liste de ce qui est
+  // inclus, bouton devis. Identite bleue, ombres du site, pas de degrade.
   // ---------------------------------------------------------------------------
-  .cta {
+  .tarifs__rappel {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-5);
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--color-brand-700);
+    background-color: var(--color-brand-50);
+    border: 1px solid var(--color-brand-100);
+    border-radius: var(--radius-pill);
+  }
+
+  .tarifs__check {
+    flex-shrink: 0;
+    color: var(--color-brand-500);
+  }
+
+  .tarifs {
+    display: grid;
+    gap: var(--space-5);
+
+    @include bp("md") {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .tarif {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-7) var(--space-6);
+  }
+
+  // Lisere cyan de marque qui apparait en haut de la carte au survol/focus.
+  // Le .card de base gere deja la transition d'elevation, d'ombre et de bordure.
+  .tarif::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background-color: var(--color-accent);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    opacity: 0;
+    transition: opacity var(--transition-base);
+  }
+
+  // Pas de dependance au pointeur : le focus clavier (sur le bouton "Obtenir un
+  // devis" de la carte) declenche exactement le meme etat que le survol.
+  .tarif:hover,
+  .tarif:focus-within {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-ink-300);
+  }
+
+  .tarif:hover::before,
+  .tarif:focus-within::before {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tarif,
+    .tarif::before {
+      transition: none;
+    }
+
+    .tarif:hover,
+    .tarif:focus-within {
+      transform: none;
+    }
+  }
+
+  .tarif__head {
+    padding-bottom: var(--space-5);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .tarif__titre {
+    font-size: var(--fs-lg);
+  }
+
+  .tarif__prix {
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--space-4);
+  }
+
+  .tarif__from {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-brand-600);
+  }
+
+  .tarif__value {
+    font-size: var(--fs-3xl);
+    font-weight: var(--fw-bold);
+    line-height: 1.05;
+    color: var(--color-brand-700);
+  }
+
+  .tarif__soustitre {
+    margin-top: var(--space-3);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  .tarif__inclus {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+    margin-bottom: var(--space-6);
+  }
+
+  .tarif__inclus li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    color: var(--color-ink-700);
+  }
+
+  .tarif__tick {
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    color: var(--color-brand-500);
+  }
+
+  .tarif__cta {
+    width: 100%;
+    margin-top: auto;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Avis Google — mur d'avis reels qui defile doucement (3 colonnes a vitesses
+  // differentes), cartes propres, avatar a initiales sur bleu de marque. Le
+  // defilement se met en pause au survol et s'arrete avec prefers-reduced-motion.
+  // ---------------------------------------------------------------------------
+  .avis__count {
+    margin-top: var(--space-3);
+    font-weight: var(--fw-semibold);
+    color: var(--color-ink-700);
+  }
+
+  .avis__cta {
+    margin-top: var(--space-5);
+  }
+
+  .star {
+    width: 1.05rem;
+    height: 1.05rem;
+    fill: none;
+    stroke: var(--color-ink-300);
+    stroke-width: 1.5;
+  }
+
+  .star--on {
+    fill: var(--color-brand-500);
+    stroke: var(--color-brand-500);
+  }
+
+  .avis-wall {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+    max-height: 38rem;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      #000 12%,
+      #000 88%,
+      transparent
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      #000 12%,
+      #000 88%,
+      transparent
+    );
+
+    @include bp("md") {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include bp("lg") {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .avis-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding-bottom: var(--space-5);
+    will-change: transform;
+    animation: avis-scroll var(--avis-duration, 32s) linear infinite;
+  }
+
+  .avis-col--2 {
+    display: none;
+
+    @include bp("md") {
+      display: flex;
+    }
+  }
+
+  .avis-col--3 {
+    display: none;
+
+    @include bp("lg") {
+      display: flex;
+    }
+  }
+
+  .avis-wall:hover .avis-col,
+  .avis-wall:focus-within .avis-col {
+    animation-play-state: paused;
+  }
+
+  @keyframes avis-scroll {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-50%);
+    }
+  }
+
+  .avis-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-6);
+  }
+
+  .avis-card__stars {
+    display: inline-flex;
+    gap: 2px;
+  }
+
+  .avis-card__text {
+    color: var(--color-ink-700);
+    line-height: var(--lh-snug);
+  }
+
+  .avis-card__author {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: auto;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .avis-card__avatar {
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    flex-shrink: 0;
+    border-radius: var(--radius-pill);
+    background-color: var(--color-brand-500);
+    color: #ffffff;
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-bold);
+  }
+
+  .avis-card__meta {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .avis-card__name {
+    font-weight: var(--fw-semibold);
+    color: var(--color-ink-900);
+  }
+
+  .avis-card__source {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .avis-wall {
+      max-height: none;
+      overflow: visible;
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+
+    .avis-col {
+      animation: none;
+      padding-bottom: 0;
+    }
+
+    .avis-card[aria-hidden="true"] {
+      display: none;
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Demande de devis — bandeau bleu de cloture. Texte a gauche, carte blanche
+  // avec un apercu du formulaire a droite. Le formulaire complet vit sur /devis.
+  // ---------------------------------------------------------------------------
+  .devis {
     color: var(--color-on-brand);
     background-color: var(--color-brand-700);
     background-image: linear-gradient(
@@ -580,43 +1353,100 @@ const departements = [
     );
   }
 
-  .cta__inner {
+  .devis__inner {
     display: grid;
-    gap: var(--space-6);
+    gap: var(--space-7);
     padding-block: var(--space-9);
 
-    @include bp("md") {
-      grid-template-columns: 1fr auto;
+    @include bp("lg") {
+      grid-template-columns: 1fr 0.9fr;
       align-items: center;
-      gap: var(--space-8);
+      gap: var(--space-9);
     }
   }
 
-  .cta__titre {
-    color: var(--color-on-brand);
-    max-width: 18ch;
+  .devis__eyebrow {
+    color: var(--color-brand-200);
+    margin-bottom: var(--space-4);
   }
 
-  .cta__lead {
+  .devis__titre {
+    color: var(--color-on-brand);
+    max-width: 16ch;
+  }
+
+  .devis__lead {
     margin-top: var(--space-4);
-    max-width: 48ch;
+    max-width: 46ch;
+    font-size: var(--fs-md);
     color: var(--color-brand-100);
   }
 
-  .cta__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4);
+  .devis__call {
+    margin-top: var(--space-5);
+    color: var(--color-brand-100);
   }
 
-  .cta__ghost {
+  .devis__call a {
     color: var(--color-on-brand);
-    border-color: rgba(255, 255, 255, 0.4);
+    font-weight: var(--fw-semibold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
-  .cta__ghost:hover {
-    border-color: var(--color-on-brand);
-    background-color: rgba(255, 255, 255, 0.08);
-    transform: translateY(-2px);
+  .devis__call a:hover {
+    color: var(--color-brand-100);
+  }
+
+  .devis__card {
+    padding: var(--space-6);
+  }
+
+  .devis__card-title {
+    margin-bottom: var(--space-5);
+    font-weight: var(--fw-semibold);
+    color: var(--color-ink-900);
+  }
+
+  .field {
+    margin-bottom: var(--space-4);
+  }
+
+  .field__label {
+    display: block;
+    margin-bottom: var(--space-2);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--color-ink-700);
+  }
+
+  .field__input {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    font-family: inherit;
+    font-size: var(--fs-base);
+    color: var(--color-ink-900);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    transition: border-color var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+
+  .field__input:focus {
+    outline: none;
+    border-color: var(--color-brand-400);
+    box-shadow: 0 0 0 3px var(--color-brand-100);
+  }
+
+  .devis__submit {
+    width: 100%;
+    margin-top: var(--space-2);
+  }
+
+  .devis__hint {
+    margin-top: var(--space-4);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
   }
 </style>

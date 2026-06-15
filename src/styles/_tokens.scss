@@ -1,27 +1,34 @@
 // =============================================================================
 // Design tokens — Garbi-Protect
-// Palette disciplinee : une seule teinte de marque (teal #009498) declinee,
-// des neutres legerement chauds pour les fonds, un presque-noir pour le texte.
-// Aucune couleur hors de ces trois familles. Pas de bleu/violet, pas de gris froid.
+// Palette disciplinee : la teinte de marque vient du logo officiel, un bleu
+// #003C95 declinE, avec un cyan #14D0F8 reserve au logo et a de rares micro-accents.
+// Des neutres legerement chauds pour les fonds, un presque-noir pour le texte.
+// Pas de violet, pas de bleu Tailwind generique, pas de degrade multicolore.
 // =============================================================================
 
 :root {
   // ---------------------------------------------------------------------------
-  // Marque — teal. #009498 = couleur de marque (boutons, liens, accents, icones).
-  // Les tints clairs (50-200) servent aux fonds doux et aux accents sur foncE.
-  // Les tons foncEs (700-950) donnent la profondeur (hero, footer).
+  // Marque — bleu du logo. #003C95 = couleur de marque (boutons, liens, accents,
+  // icones, eyebrow, ronds). Les tints clairs (50-200) servent aux fonds doux et
+  // aux accents sur foncE. #002A66 (700) donne la profondeur (hero, footer, survol).
   // ---------------------------------------------------------------------------
-  --color-brand-50: #ecf6f7;
-  --color-brand-100: #d6edee;
-  --color-brand-200: #aadcde;
-  --color-brand-300: #74c4c6;
-  --color-brand-400: #34a9ac;
-  --color-brand-500: #009498; // couleur de marque
-  --color-brand-600: #007e81;
-  --color-brand-700: #00686b; // fond hero
-  --color-brand-800: #005457;
-  --color-brand-900: #023133; // fond footer
-  --color-brand-950: #011f20; // profondeur maximale (barre footer)
+  --color-brand-50: #e9eff7;
+  --color-brand-100: #d2def0;
+  --color-brand-200: #a6c0e3;
+  --color-brand-300: #6d97d0;
+  --color-brand-400: #3568b4;
+  --color-brand-500: #003c95; // couleur de marque
+  --color-brand-600: #00337f;
+  --color-brand-700: #002a66; // bleu fonce — profondeur (hero, footer, survol)
+  --color-brand-800: #002053;
+  --color-brand-900: #001a42; // barre footer
+  --color-brand-950: #00112c; // profondeur maximale
+
+  // ---------------------------------------------------------------------------
+  // Accent — cyan #14D0F8. Strictement reserve au logo (degrade cyan vers bleu)
+  // et a de rares micro-accents. Jamais en aplat de fond ni sur du texte courant.
+  // ---------------------------------------------------------------------------
+  --color-accent: #14d0f8;
 
   // ---------------------------------------------------------------------------
   // Neutres — gris legerement chauds (jamais froids). Fonds, bordures, textes.
@@ -50,10 +57,19 @@
   --color-link: var(--color-brand-700);
   --color-link-hover: var(--color-brand-600);
 
-  --color-footer-bg: var(--color-brand-900);
-  --color-footer-bar: var(--color-brand-950);
+  --color-footer-bg: var(--color-brand-700); // bleu fonce #002A66
+  --color-footer-bar: var(--color-brand-900);
 
-  --color-on-brand: #ffffff; // texte/icones sur fond teal
+  --color-on-brand: #ffffff; // texte/icones sur fond bleu
+
+  // Degrade cyan vers bleu — uniquement pour le logo. Le cyan reste un eclat de
+  // coin, le bleu domine pour que le contenu pose dessus reste lisible.
+  --gradient-logo: linear-gradient(
+    140deg,
+    var(--color-accent) -10%,
+    var(--color-brand-500) 38%,
+    var(--color-brand-700) 100%
+  );
 
   // ---------------------------------------------------------------------------
   // Typographie — une famille, une echelle modulaire fluide (clamp).

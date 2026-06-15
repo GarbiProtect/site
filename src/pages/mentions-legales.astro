@@ -1,0 +1,32 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Mentions légales, Garbi-Protect"
+  description="Mentions légales de Garbi-Protect."
+  noindex={true}
+>
+  <section class="section">
+    <div class="container legal">
+      <h1>Mentions légales</h1>
+      <p>
+        Cette page sera complétée avec les mentions légales définitives de
+        Garbi-Protect (éditeur, hébergeur, numéro SIRET, responsable de
+        publication).
+      </p>
+      <p><a href="/">Retour à l'accueil</a></p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .legal {
+    max-width: var(--container-narrow);
+  }
+
+  .legal p {
+    margin-top: var(--space-5);
+    color: var(--color-text-muted);
+  }
+</style>

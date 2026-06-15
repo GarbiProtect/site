@@ -1,0 +1,69 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Phone from "../components/icons/Phone.astro";
+import { site } from "../data/site";
+---
+
+<Layout
+  title="Merci, demande bien reçue, Garbi-Protect"
+  description="Votre demande de devis a bien été reçue. Garbi-Protect vous rappelle au plus vite."
+  noindex={true}
+>
+  <section class="section merci">
+    <div class="container merci__inner">
+      <span class="merci__check" aria-hidden="true">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m5 12.5 4.2 4.2L19 7"></path>
+        </svg>
+      </span>
+
+      <h1>Merci, votre demande est bien reçue.</h1>
+      <p class="merci__lead">On vous rappelle au plus vite.</p>
+
+      <p class="merci__call">
+        Une urgence ? Appelez le
+        <a href={site.phoneHref}>{site.phone}</a>.
+      </p>
+
+      <a class="btn btn--primary merci__home" href="/">Retour à l'accueil</a>
+    </div>
+  </section>
+</Layout>
+
+<style lang="scss">
+  .merci__inner {
+    max-width: var(--container-narrow);
+    text-align: center;
+  }
+
+  .merci__check {
+    display: inline-grid;
+    place-items: center;
+    width: 4rem;
+    height: 4rem;
+    margin-bottom: var(--space-5);
+    color: #ffffff;
+    background-color: var(--color-brand-500);
+    border-radius: var(--radius-pill);
+  }
+
+  .merci__lead {
+    margin-top: var(--space-4);
+    font-size: var(--fs-md);
+    color: var(--color-text-muted);
+  }
+
+  .merci__call {
+    margin-top: var(--space-6);
+  }
+
+  .merci__call a {
+    font-weight: var(--fw-semibold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .merci__home {
+    margin-top: var(--space-6);
+  }
+</style>

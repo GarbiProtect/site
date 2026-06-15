@@ -2,6 +2,7 @@
 import "../styles/global.scss";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import WhatsApp from "../components/icons/WhatsApp.astro";
 import { site } from "../data/site";
 
 interface Props {
@@ -66,6 +67,47 @@ const ogImageURL = new URL(ogImage, Astro.site);
       <slot />
     </main>
     <Footer />
+
+    <a
+      class="wa-fab"
+      href={site.whatsapp}
+      target="_blank"
+      rel="noopener"
+      aria-label="Écrire à Garbi-Protect sur WhatsApp"
+    >
+      <WhatsApp size={28} />
+    </a>
+
+    <style>
+      .wa-fab {
+        position: fixed;
+        right: 1rem;
+        bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+        z-index: 40;
+        display: inline-grid;
+        place-items: center;
+        width: 3.25rem;
+        height: 3.25rem;
+        color: #ffffff;
+        background-color: #25d366;
+        border-radius: var(--radius-pill);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+        transition: transform var(--transition-base),
+          box-shadow var(--transition-base);
+      }
+
+      .wa-fab:hover {
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.26);
+      }
+
+      @media (min-width: 48rem) {
+        .wa-fab {
+          display: none;
+        }
+      }
+    </style>
 
     <script>
       // Micro-interactions, vanilla. Deux comportements discrets :

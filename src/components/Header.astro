@@ -1,28 +1,49 @@
 ---
+import { Image } from "astro:assets";
 import { site } from "../data/site";
 import Phone from "./icons/Phone.astro";
+import WhatsApp from "./icons/WhatsApp.astro";
+import logoFull from "../assets/garbi-logo-trim.png";
 ---
 
 <header class="site-header" data-header>
   <div class="container site-header__inner">
     <a class="brand" href="/" aria-label={`${site.name}, accueil`}>
-      <span class="brand__mark" aria-hidden="true">G</span>
-      <span class="brand__name">{site.name}</span>
+      <Image
+        class="brand__logo"
+        src={logoFull}
+        alt="Garbi-Protect"
+        width={316}
+        height={72}
+        loading="eager"
+      />
     </a>
 
     <nav class="site-nav" aria-label="Navigation principale">
       <ul role="list" class="site-nav__list">
-        <li><a href="#">Nuisibles</a></li>
-        <li><a href="#">Secteurs</a></li>
-        <li><a href="#">Tarifs</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="/#nuisibles">Nuisibles</a></li>
+        <li><a href="/#secteurs">Secteurs</a></li>
+        <li><a href="/#tarifs">Tarifs</a></li>
+        <li><a href="/devis">Contact</a></li>
       </ul>
     </nav>
 
-    <a class="btn btn--primary site-header__cta" href={site.phoneHref}>
-      <Phone size={18} />
-      <span>{site.phone}</span>
-    </a>
+    <div class="site-header__actions">
+      <a
+        class="btn btn--ghost site-header__wa"
+        href={site.whatsapp}
+        target="_blank"
+        rel="noopener"
+        aria-label="Écrire à Garbi-Protect sur WhatsApp"
+      >
+        <WhatsApp size={18} />
+        <span>WhatsApp</span>
+      </a>
+      <a class="btn btn--primary site-header__cta" href={site.phoneHref}>
+        <Phone size={18} />
+        <span>{site.phone}</span>
+      </a>
+    </div>
   </div>
 </header>
 
@@ -73,26 +94,22 @@ import Phone from "./icons/Phone.astro";
     letter-spacing: var(--tracking-tight);
   }
 
-  .brand__mark {
-    display: inline-grid;
-    place-items: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    background-color: var(--color-brand-500);
-    color: #ffffff;
-    border-radius: var(--radius-md);
-    font-size: var(--fs-md);
-    box-shadow: var(--shadow-sm);
-    transition: width var(--transition-base), height var(--transition-base);
+  .brand__logo {
+    height: 1.75rem;
+    width: auto;
+    transition: height var(--transition-base);
+
+    @include bp("sm") {
+      height: 2.25rem;
+    }
   }
 
-  .site-header.is-scrolled .brand__mark {
-    width: 2rem;
-    height: 2rem;
-  }
+  .site-header.is-scrolled .brand__logo {
+    height: 1.55rem;
 
-  .brand__name {
-    font-size: var(--fs-md);
+    @include bp("sm") {
+      height: 2rem;
+    }
   }
 
   .site-nav {
@@ -118,8 +135,24 @@ import Phone from "./icons/Phone.astro";
     color: var(--color-brand-600);
   }
 
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .site-header__wa {
+    display: none;
+    padding-block: 0.7rem;
+
+    @include bp("md") {
+      display: inline-flex;
+    }
+  }
+
   .site-header__cta {
     display: none;
+    padding-block: 0.7rem;
 
     @include bp("sm") {
       display: inline-flex;
