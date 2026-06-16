@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
 import Phone from "../components/icons/Phone.astro";
+import WhatsApp from "../components/icons/WhatsApp.astro";
 import PestIcon from "../components/icons/PestIcon.astro";
 import { site } from "../data/site";
 import { nuisibles } from "../data/nuisibles";
@@ -21,6 +22,12 @@ const nuisibleImages = import.meta.glob<{ default: ImageMetadata }>(
 );
 const nuisibleImage = (file: string): ImageMetadata =>
   nuisibleImages[`../assets/nuisibles/${file}`].default;
+
+const heroPoints = [
+  "Intervention sous 2h en urgence",
+  "Techniciens Certibiocide",
+  "Devis clair",
+];
 
 const etapes = [
   {
@@ -139,10 +146,12 @@ const avisInitiales = (nom: string): string => {
   return (mots[0][0] + mots[mots.length - 1][0]).toUpperCase();
 };
 
-// Nombre total d'avis affiche sous le titre. Lien vers la fiche Google a remplir.
-// Aucune note moyenne n'est affichee tant qu'elle n'est pas fournie (pas d'invention).
-const avisTotal = "44";
-const avisUrl = "LIEN_GOOGLE_A_REMPLIR";
+// Note moyenne et nombre d'avis Google. A changer ICI (un seul endroit) quand de
+// nouveaux avis arrivent : la note alimente aussi les etoiles de l'entete avis.
+const avisNote = "5";
+const avisTotal = "46";
+const avisUrl =
+  "https://www.google.com/maps/place/Garbi-Protect/@48.8001719,1.9485009,804m/data=!3m1!1e3!4m8!3m7!1s0x47e6854e50ba2df7:0xf4b3bad6450987fd!8m2!3d48.8001684!4d1.9510758!9m1!1b1!16s%2Fg%2F11yppptl6n";
 
 // Repartition en 3 colonnes pour le mur d'avis qui defile doucement.
 const avisColonnes = [avis.slice(0, 5), avis.slice(5, 10), avis.slice(10, 15)];
@@ -157,46 +166,71 @@ const starPath =
   description="Garbi-Protect intervient contre rats, souris, punaises de lit, cafards et guêpes en Île-de-France. Techniciens Certibiocide, intervention en urgence sous 2h."
 >
   <section class="hero">
-    <div class="container hero__grid">
-      <div class="hero__content">
-        <p class="eyebrow hero__eyebrow">
-          Dératisation · Désinsectisation · Île-de-France
-        </p>
-        <h1 class="hero__title">
-          Un nuisible chez vous ? On intervient vite et bien.
-        </h1>
-        <p class="hero__lead">
-          Rats, souris, punaises de lit, cafards, guêpes. Techniciens certifiés,
-          intervention en urgence sous 2h, partout en Île-de-France.
-        </p>
+    <Image
+      class="hero__bg"
+      src={heroPhoto}
+      alt="Deux techniciens Garbi-Protect devant leur véhicule d'intervention en Île-de-France."
+      widths={[768, 1280, 1600]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+    <div class="hero__veil" aria-hidden="true"></div>
 
-        <div class="hero__actions">
-          <a class="btn btn--on-dark" href={site.phoneHref}>
-            <Phone size={18} />
-            <span>Appeler le {site.phone}</span>
-          </a>
-          <a class="btn hero__quote" href="#devis">Demander un devis</a>
-        </div>
+    <div class="container hero__inner">
+      <p class="eyebrow hero__eyebrow">
+        Punaises de lit · Dératisation · Désinsectisation
+      </p>
+      <h1 class="hero__title">
+        Un nuisible chez vous ? On intervient vite et bien.
+      </h1>
+      <p class="hero__lead">
+        Intervention rapide partout en Île-de-France. Devis gratuit, prix annoncé
+        avant l'intervention.
+      </p>
 
-        <ul role="list" class="hero__points">
-          <li>Intervention sous 2h en urgence</li>
-          <li>Techniciens Certibiocide</li>
-          <li>Devis clair, sans surprise</li>
-        </ul>
+      <div class="hero__actions">
+        <a class="btn btn--on-dark" href="/devis">Demander un devis</a>
+        <a class="btn hero__ghost" href={site.phoneHref}>
+          <Phone size={18} />
+          <span>Appeler le {site.phone}</span>
+        </a>
+        <a
+          class="btn hero__ghost hero__wa"
+          href={site.whatsapp}
+          target="_blank"
+          rel="noopener"
+          aria-label="Nous écrire sur WhatsApp"
+        >
+          <WhatsApp size={18} />
+          <span>WhatsApp</span>
+        </a>
       </div>
 
-      <div class="hero__media">
-        <Image
-          class="hero__photo"
-          src={heroPhoto}
-          alt="Deux techniciens Garbi-Protect devant leur véhicule d'intervention en Île-de-France."
-          widths={[420, 640, 880]}
-          sizes="(min-width: 64rem) 44vw, 90vw"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-        />
-      </div>
+      <ul role="list" class="hero__points">
+        {
+          heroPoints.map((p) => (
+            <li>
+              <svg
+                class="hero__check"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="m5 12.5 4.2 4.2L19 7" />
+              </svg>
+              <span>{p}</span>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
@@ -408,10 +442,33 @@ const starPath =
   <section class="section section--muted avis" id="avis" aria-labelledby="avis-titre">
     <div class="container">
       <div class="section-head section-head--center reveal">
-        <p class="eyebrow">Avis Google</p>
-        <h2 id="avis-titre">Ils nous recommandent</h2>
-        <p class="avis__count">{avisTotal} avis sur Google</p>
-        <a class="btn btn--ghost avis__cta" href={avisUrl}>
+        <p class="eyebrow">Votre avis compte</p>
+        <h2 id="avis-titre">Ils nous font confiance</h2>
+        <p class="section-head__lead">
+          Les témoignages de nos clients en Île-de-France.
+        </p>
+
+        <div
+          class="avis-note"
+          aria-label={`Note moyenne ${avisNote} sur 5, ${avisTotal} avis sur Google`}
+        >
+          <span class="avis-note__stars" aria-hidden="true">
+            {etoiles.map(() => (
+              <svg class="star star--on" width="20" height="20" viewBox="0 0 24 24">
+                <path d={starPath} />
+              </svg>
+            ))}
+          </span>
+          <span class="avis-note__score">{avisNote} sur 5</span>
+          <span class="avis-note__count">{avisTotal} avis sur Google</span>
+        </div>
+
+        <a
+          class="btn btn--ghost avis__cta"
+          href={avisUrl}
+          target="_blank"
+          rel="noopener"
+        >
           Voir tous les avis sur Google
         </a>
       </div>
@@ -547,115 +604,134 @@ const starPath =
   @use "../styles/mixins" as *;
 
   // ---------------------------------------------------------------------------
-  // Hero — fond bleu avec un degrade mono-teinte tres discret pour la
-  // profondeur (jamais multi-couleur). Le contenu reste plein et opaque.
+  // Hero pleine largeur — photo d'intervention en fond (object-fit: cover) sous
+  // un voile degrade bleu de marque (#002A66 -> #003C95) assez opaque : la photo
+  // reste mise en valeur sans etre brute, et le texte blanc reste tres lisible.
+  // Contenu centre, aere, typo large. Aucun mouvement (rien a desactiver).
   // ---------------------------------------------------------------------------
   .hero {
-    color: var(--color-on-brand);
-    background-color: var(--color-brand-700);
-    background-image: linear-gradient(
-      165deg,
-      var(--color-brand-700) 0%,
-      var(--color-brand-800) 100%
-    );
-  }
-
-  .hero__grid {
-    display: grid;
-    gap: var(--space-8);
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 80vh;
     padding-block: var(--space-9);
+    overflow: hidden;
+    color: var(--color-on-brand);
+    background-color: var(--color-brand-800);
 
     @include bp("lg") {
-      grid-template-columns: 1.05fr 0.95fr;
-      align-items: center;
-      gap: var(--space-9);
-      padding-block: var(--space-11);
+      padding-block: var(--space-10);
     }
   }
 
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+
+  .hero__veil {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-image: linear-gradient(
+      160deg,
+      rgba(0, 42, 102, 0.94) 0%,
+      rgba(0, 60, 149, 0.85) 100%
+    );
+  }
+
+  .hero__inner {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
   .hero__eyebrow {
-    color: var(--color-brand-200);
     margin-bottom: var(--space-5);
+    color: var(--color-accent);
   }
 
   .hero__title {
+    max-width: 20ch;
     color: var(--color-on-brand);
     font-size: var(--fs-display);
-    max-width: 16ch;
+    text-wrap: balance;
   }
 
   .hero__lead {
     margin-top: var(--space-6);
-    max-width: 50ch;
+    max-width: 54ch;
     font-size: var(--fs-md);
-    color: var(--color-brand-100);
+    color: rgba(255, 255, 255, 0.92);
   }
 
   .hero__actions {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: stretch;
     gap: var(--space-4);
+    width: 100%;
+    max-width: 22rem;
     margin-top: var(--space-8);
+
+    @include bp("sm") {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      width: auto;
+      max-width: none;
+    }
   }
 
-  .hero__quote {
+  .hero__ghost {
     color: var(--color-on-brand);
-    border-color: rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.55);
   }
 
-  .hero__quote:hover {
+  .hero__ghost:hover {
     border-color: var(--color-on-brand);
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: rgba(255, 255, 255, 0.1);
     transform: translateY(-2px);
+  }
+
+  // Icone WhatsApp en vert officiel sur le bouton contour.
+  .hero__wa :global(svg) {
+    color: #25d366;
   }
 
   .hero__points {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-3) var(--space-6);
+    justify-content: center;
+    gap: var(--space-3) var(--space-5);
     margin-top: var(--space-8);
-    padding-top: var(--space-6);
-    border-top: 1px solid rgba(255, 255, 255, 0.16);
     font-weight: var(--fw-medium);
-    color: var(--color-brand-100);
+    color: rgba(255, 255, 255, 0.9);
   }
 
   .hero__points li {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: var(--space-2);
   }
 
-  .hero__points li::before {
-    content: "✓";
-    display: inline-grid;
-    place-items: center;
-    width: 1.5rem;
-    height: 1.5rem;
+  .hero__check {
     flex-shrink: 0;
-    color: var(--color-brand-800);
-    background-color: var(--color-brand-300);
-    border-radius: var(--radius-pill);
-    font-size: var(--fs-sm);
-    font-weight: var(--fw-bold);
+    color: var(--color-accent);
   }
 
-  .hero__media {
-    display: flex;
-  }
-
-  .hero__photo {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-    object-position: center 25%;
-    border-radius: var(--radius-2xl);
-    box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255, 255, 255, 0.12);
-
-    @include bp("lg") {
-      aspect-ratio: 4 / 5;
-      object-position: center 20%;
+  @media (prefers-reduced-motion: reduce) {
+    .hero__ghost:hover {
+      transform: none;
     }
   }
 
@@ -1174,10 +1250,51 @@ const starPath =
   // differentes), cartes propres, avatar a initiales sur bleu de marque. Le
   // defilement se met en pause au survol et s'arrete avec prefers-reduced-motion.
   // ---------------------------------------------------------------------------
-  .avis__count {
-    margin-top: var(--space-3);
-    font-weight: var(--fw-semibold);
-    color: var(--color-ink-700);
+  // Note moyenne mise en avant sous le titre : etoiles pleines + "5 sur 5" +
+  // nombre d'avis, dans une pastille blanche bien lisible.
+  .avis-note {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2) var(--space-3);
+    margin-top: var(--space-5);
+    padding: var(--space-3) var(--space-5);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .avis-note__stars {
+    display: inline-flex;
+    gap: 2px;
+  }
+
+  .avis-note__stars .star {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  .avis-note__score {
+    font-size: var(--fs-md);
+    font-weight: var(--fw-bold);
+    color: var(--color-ink-900);
+  }
+
+  .avis-note__count {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-text-muted);
+  }
+
+  .avis-note__count::before {
+    content: "";
+    width: 4px;
+    height: 4px;
+    border-radius: var(--radius-pill);
+    background-color: var(--color-ink-300);
   }
 
   .avis__cta {
